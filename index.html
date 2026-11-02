@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth dark" data-theme="emerald">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Huỳnh Anh Khoa | Backend .NET Developer & Technical Business Analyst</title>
+  
+  <!-- SEO & Meta Tags -->
+  <meta name="description" content="Portfolio của Huỳnh Anh Khoa - Backend .NET Developer & Technical Business Analyst tại TP. Hồ Chí Minh. Tập trung vào Clean Architecture, CQRS MediatR, SignalR và phân tích nghiệp vụ thực tế." />
+  <meta name="keywords" content="Huynh Anh Khoa, .NET Developer, Technical BA, C#, ASP.NET Core, CQRS, Clean Architecture, SignalR, Portfolio" />
+  <meta name="author" content="Huỳnh Anh Khoa" />
+  <meta property="og:title" content="Huỳnh Anh Khoa | Backend .NET Developer & Technical BA" />
+  <meta property="og:description" content="Kỹ sư phần mềm .NET với tư duy phân tích nghiệp vụ rõ ràng, làm việc thực tế và chú trọng chất lượng mã nguồn." />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            accent: {
+              DEFAULT: 'var(--primary)',
+              hover: 'var(--primary-hover)',
+              subtle: 'var(--primary-subtle)',
+              border: 'var(--primary-border)',
+              badge: 'var(--badge-text)',
+            },
+            surface: {
+              base: 'var(--bg-main)',
+              card: 'var(--bg-card)',
+              hover: 'var(--bg-card-hover)',
+              elevated: 'var(--bg-surface)',
+              border: 'var(--border-color)',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Nordic Sage & Carbon Theme (Chính thức) */
+    :root {
+      --bg-main: #0b0f0d;
+      --bg-card: #111714;
+      --bg-card-hover: #17211c;
+      --bg-surface: #1c2822;
+      --border-color: #22332a;
+      --border-hover: rgba(16, 185, 129, 0.45);
+      --primary: #10b981;
+      --primary-hover: #059669;
+      --primary-subtle: rgba(16, 185, 129, 0.12);
+      --primary-border: rgba(16, 185, 129, 0.28);
+      --badge-text: #34d399;
+      --terminal-header: #0f1411;
+      --scrollbar-thumb: #22332a;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-main);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    /* Subtle grid pattern */
+    .bg-grid-pattern {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+    
+    .glass-header {
+      background: rgba(12, 14, 18, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease-out;
+    }
+
+    .project-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .terminal-cursor {
+      display: inline-block;
+      width: 6px;
+      height: 13px;
+      background-color: var(--primary);
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+
+<body class="bg-surface-base text-slate-300 font-sans selection:bg-accent selection:text-black relative overflow-x-hidden antialiased transition-colors duration-200">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass-header">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-lg bg-surface-card border border-surface-border flex items-center justify-center font-mono font-bold text-accent transition-transform group-hover:scale-105">
+          AK
+        </div>
+        <div class="flex flex-col">
+          <span class="font-semibold text-sm sm:text-base tracking-tight text-white group-hover:text-accent transition-colors">
+            Huỳnh Anh Khoa
+          </span>
+          <span class="text-[11px] font-mono text-slate-400">
+            .NET Dev &amp; Tech BA
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm text-slate-300">
+        <a href="#about" class="hover:text-white transition-colors">Giới thiệu</a>
+        <a href="#projects" class="hover:text-white transition-colors">Dự án</a>
+        <a href="#skills" class="hover:text-white transition-colors">Kỹ năng</a>
+        <a href="#principles" class="hover:text-white transition-colors">Nguyên tắc</a>
+        <a href="#education" class="hover:text-white transition-colors">Học vấn</a>
+      </nav>
+
+      <!-- Right Controls: Status Badge + Contact Button -->
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-surface-card border border-surface-border text-xs text-accent">
+          <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+          <span>Sẵn sàng nhận việc</span>
+        </div>
+
+        <a href="#contact" class="hidden sm:inline-flex px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-accent text-black hover:opacity-90 transition-opacity">
+          Liên hệ
+        </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="mobile-menu-btn" aria-label="Toggle Menu" class="md:hidden p-1.5 text-slate-300 hover:text-white">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-surface-border bg-surface-base px-6 py-4 space-y-3">
+      <a href="#about" class="mobile-link block text-sm text-slate-300 hover:text-white">Giới thiệu</a>
+      <a href="#projects" class="mobile-link block text-sm text-slate-300 hover:text-white">Dự án thực tế</a>
+      <a href="#skills" class="mobile-link block text-sm text-slate-300 hover:text-white">Kỹ năng chuyên môn</a>
+      <a href="#principles" class="mobile-link block text-sm text-slate-300 hover:text-white">Nguyên tắc làm việc</a>
+      <a href="#education" class="mobile-link block text-sm text-slate-300 hover:text-white">Học vấn &amp; Quá trình</a>
+      <a href="#contact" class="mobile-link block text-sm text-accent font-semibold pt-2 border-t border-surface-border">Liên hệ ngay &#8594;</a>
+    </div>
+  </header>
+
+  <main class="relative z-10 pt-20 sm:pt-24">
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative min-h-[85vh] flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6 max-w-6xl mx-auto bg-grid-pattern">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center w-full">
+        
+        <!-- Left: Value Proposition -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <div class="inline-flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium bg-accent-subtle text-accent border border-accent-border">
+              <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+              Backend .NET Developer
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium bg-surface-card text-slate-300 border border-surface-border">
+              <i data-lucide="git-branch" class="w-3.5 h-3.5 text-accent"></i>
+              Technical Business Analyst
+            </span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs text-slate-400 bg-surface-card border border-surface-border">
+              <i data-lucide="map-pin" class="w-3 h-3 text-red-400"></i>
+              TP. Hồ Chí Minh
+            </span>
+          </div>
+
+          <!-- Headline -->
+          <div class="space-y-3">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+              Xây dựng Backend .NET vững chắc, <br class="hidden sm:inline" />
+              <span class="text-accent">
+                bắt đầu từ việc hiểu đúng nghiệp vụ.
+              </span>
+            </h1>
+            
+            <p class="text-sm sm:text-base text-slate-300 font-normal leading-relaxed">
+              Xin chào, mình là <strong class="text-white">Huỳnh Anh Khoa</strong>. Mình tập trung phát triển các ứng dụng backend bằng <strong class="text-white">C# / .NET 8</strong>, áp dụng kiến trúc <span class="font-mono text-accent">Clean Architecture</span> và <span class="font-mono text-accent">CQRS</span> để mã nguồn rành mạch, dễ kiểm thử và bảo trì. Với tư duy Tech BA, mình luôn làm rõ quy trình và bài toán trước khi bắt tay viết mã.
+            </p>
+          </div>
+
+          <!-- Dual Practical Pillars -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+            <div class="p-3.5 rounded-xl bg-surface-card border border-surface-border space-y-1.5">
+              <div class="flex items-center gap-2 text-accent text-xs font-semibold">
+                <i data-lucide="code-2" class="w-4 h-4"></i>
+                <span>Góc độ Lập Trình (Dev)</span>
+              </div>
+              <p class="text-xs text-slate-400 leading-normal">
+                Viết code tuân thủ SOLID, chia tầng độc lập, xử lý real-time với SignalR, tối ưu câu lệnh EF Core và đóng gói Docker chạy ổn định.
+              </p>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-surface-card border border-surface-border space-y-1.5">
+              <div class="flex items-center gap-2 text-accent text-xs font-semibold">
+                <i data-lucide="check-square" class="w-4 h-4"></i>
+                <span>Góc độ Nghiệp Vụ (BA)</span>
+              </div>
+              <p class="text-xs text-slate-400 leading-normal">
+                Vẽ luồng BPMN/Sequence, làm rõ User Story, điều kiện nghiệm thu (Acceptance Criteria) và tài liệu hóa API Swagger chuẩn xác.
+              </p>
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <a href="#projects" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-accent text-black font-semibold text-xs sm:text-sm hover:opacity-90 transition-opacity">
+              <span>Xem các dự án</span>
+              <i data-lucide="arrow-down" class="w-4 h-4"></i>
+            </a>
+
+            <button onclick="openCvModal()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-card hover:bg-surface-hover text-slate-200 border border-surface-border font-medium text-xs sm:text-sm transition-colors">
+              <i data-lucide="file-text" class="w-4 h-4 text-accent"></i>
+              <span>Xem tóm tắt CV</span>
+            </button>
+
+            <a href="https://github.com/anhkhoadev9" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-lg bg-surface-card hover:bg-surface-hover text-slate-300 hover:text-white border border-surface-border transition-colors" title="GitHub">
+              <i data-lucide="github" class="w-4 h-4"></i>
+            </a>
+
+            <a href="mailto:huynhankhoa30042019@gmail.com" class="p-2.5 rounded-lg bg-surface-card hover:bg-surface-hover text-slate-300 hover:text-white border border-surface-border transition-colors" title="Email">
+              <i data-lucide="mail" class="w-4 h-4"></i>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Right: Realistic C# Code Snippet -->
+        <div class="lg:col-span-5">
+          <div class="rounded-xl bg-surface-card border border-surface-border shadow-xl overflow-hidden font-mono text-[11px] sm:text-xs">
+            <!-- Header bar -->
+            <div class="bg-[var(--terminal-header)] px-4 py-2.5 border-b border-surface-border flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-700 inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-700 inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-700 inline-block"></span>
+                <span class="ml-2 text-slate-400 text-[11px]">CreateTicketHandler.cs</span>
+              </div>
+              <span class="text-[10px] text-slate-500">.NET 8</span>
+            </div>
+
+            <!-- Code block -->
+            <div class="p-4 space-y-2 text-slate-300 leading-relaxed overflow-x-auto">
+              <div class="text-slate-500">// 1. Command tách biệt theo chuẩn CQRS</div>
+              <div>
+                <span class="text-red-400">public record</span> 
+                <span class="text-accent font-semibold">CreateTicketCommand</span>(
+                <span class="text-slate-300">string</span> CustomerName, 
+                <span class="text-slate-300">int</span> CounterId) : <span class="text-slate-400">IRequest&lt;TicketDto&gt;</span>;
+              </div>
+              
+              <div class="pt-1 text-slate-500">// 2. Handler xử lý nghiệp vụ & broadcast SignalR</div>
+              <div>
+                <span class="text-red-400">public class</span> 
+                <span class="text-accent font-semibold">CreateTicketHandler</span> : <span class="text-slate-400">IRequestHandler&lt;CreateTicketCommand, TicketDto&gt;</span>
+                <br />{
+                <div class="pl-3.5 border-l border-surface-border space-y-1 py-1">
+                  <div>
+                    <span class="text-red-400">public async</span> <span class="text-slate-300">Task&lt;TicketDto&gt;</span> Handle(...) {
+                  </div>
+                  <div class="pl-3.5 text-slate-400">
+                    <span class="text-slate-500">// Tạo số thứ tự và lưu PostgreSQL</span><br />
+                    <span class="text-accent">var</span> ticket = <span class="text-red-400">new</span> <span class="text-white">Ticket</span>(cmd.CustomerName, cmd.CounterId);<br />
+                    <span class="text-accent">await</span> _dbContext.Tickets.AddAsync(ticket);<br />
+                    <span class="text-accent">await</span> _dbContext.SaveChangesAsync();<br />
+                    <br />
+                    <span class="text-slate-500">// Bắn sự kiện realtime tới màn hình quầy</span><br />
+                    <span class="text-accent">await</span> _hub.Clients.All.SendAsync(<span class="text-emerald-400">"TicketCreated"</span>, ticket.Number);<br />
+                    <span class="text-red-400">return</span> ticket.ToDto();
+                  </div>
+                  <div>}</div>
+                </div>
+                }
+              </div>
+
+              <div class="pt-2 border-t border-surface-border text-[10px] text-slate-500 flex items-center justify-between">
+                <span>Clean Architecture &bull; PostgreSQL &bull; SignalR</span>
+                <span class="text-accent">Compiling<span class="terminal-cursor"></span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- REALISTIC QUICK METRICS BAR -->
+    <section class="border-y border-surface-border bg-surface-card/40 py-8 px-4 sm:px-6">
+      <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        
+        <div>
+          <div class="text-2xl sm:text-3xl font-bold text-accent font-mono">
+            .NET 8
+          </div>
+          <div class="text-xs text-slate-400 mt-1">C# &amp; ASP.NET Core hiện đại</div>
+        </div>
+
+        <div>
+          <div class="text-2xl sm:text-3xl font-bold text-white font-mono">
+            Clean Arch
+          </div>
+          <div class="text-xs text-slate-400 mt-1">CQRS MediatR phân tầng rõ ràng</div>
+        </div>
+
+        <div>
+          <div class="text-2xl sm:text-3xl font-bold text-accent font-mono">
+            SignalR
+          </div>
+          <div class="text-xs text-slate-400 mt-1">Real-time WebSocket event stream</div>
+        </div>
+
+        <div>
+          <div class="text-2xl sm:text-3xl font-bold text-white font-mono">
+            Tech BA
+          </div>
+          <div class="text-xs text-slate-400 mt-1">BPMN 2.0 &amp; Đặc tả User Stories</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="py-16 sm:py-20 px-4 sm:px-6 max-w-6xl mx-auto">
+      <div class="space-y-3 mb-12 text-center max-w-2xl mx-auto">
+        <h2 class="text-xs font-mono font-semibold text-accent uppercase tracking-wider">
+          // Giới thiệu bản thân
+        </h2>
+        <h3 class="text-2xl sm:text-3xl font-bold text-white">
+          Tại sao lại kết hợp giữa Backend Dev và Tech BA?
+        </h3>
+        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+          Trong quá trình học tập và làm đồ án, mình nhận thấy một vấn đề rất phổ biến: <strong>lập trình viên thường viết code trước khi hiểu rõ yêu cầu thực tế</strong>, dẫn đến việc phải đập đi xây lại database và API nhiều lần.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Dev focus -->
+        <div class="p-6 rounded-xl bg-surface-card border border-surface-border space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-accent-subtle text-accent flex items-center justify-center">
+              <i data-lucide="server" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="text-base font-bold text-white">Kỹ năng Lập Trình Backend (.NET)</h4>
+              <span class="text-[11px] text-slate-400">Viết mã sạch và có cấu trúc</span>
+            </div>
+          </div>
+          
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Mình không cố gắng sử dụng công nghệ quá phức tạp chỉ để phô trương. Mình ưu tiên:
+          </p>
+
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-accent mt-0.5 flex-shrink-0"></i>
+              <span>Cấu trúc mã theo <strong>Clean Architecture</strong>: tách biệt Domain, Application, Infrastructure và Presentation.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-accent mt-0.5 flex-shrink-0"></i>
+              <span>Áp dụng <strong>CQRS với MediatR</strong> để chia nhỏ các luồng xử lý (Handler) độc lập, không dồn logic vào Controller.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-accent mt-0.5 flex-shrink-0"></i>
+              <span>Làm việc thành thạo với <strong>EF Core, PostgreSQL, SQL Server</strong> và tối ưu hóa truy vấn dữ liệu.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-accent mt-0.5 flex-shrink-0"></i>
+              <span>Container hóa ứng dụng với <strong>Docker &amp; Docker Compose</strong> để môi trường dev đồng nhất.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- BA focus -->
+        <div class="p-6 rounded-xl bg-surface-card border border-surface-border space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-surface-elevated text-slate-200 flex items-center justify-center">
+              <i data-lucide="clipboard-list" class="w-5 h-5 text-accent"></i>
+            </div>
+            <div>
+              <h4 class="text-base font-bold text-white">Tư duy Phân Tích Nghiệp Vụ (Tech BA)</h4>
+              <span class="text-[11px] text-slate-400">Làm rõ bài toán trước khi code</span>
+            </div>
+          </div>
+          
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Năng lực phân tích giúp mình tự tin khi tiếp cận một nghiệp vụ mới:
+          </p>
+
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-accent mt-0.5 flex-shrink-0"></i>
+              <span>Phân rã nghiệp vụ thành <strong>User Story</strong> kèm theo tiêu chí nghiệm thu rõ ràng (<strong>Acceptance Criteria</strong>).</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-accent mt-0.5 flex-shrink-0"></i>
+              <span>Vẽ sơ đồ luồng quy trình bằng <strong>BPMN 2.0</strong> và sơ đồ tương tác <strong>UML Sequence Diagram</strong>.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-accent mt-0.5 flex-shrink-0"></i>
+              <span>Thiết kế trước <strong>API Contract (Swagger/OpenAPI)</strong> để team Frontend có thể làm việc song song.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-accent mt-0.5 flex-shrink-0"></i>
+              <span>Giao tiếp thẳng thắn, rõ ràng và biết cách đặt câu hỏi khi yêu cầu chưa đủ thông tin.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FEATURED PROJECTS SECTION (CASE STUDIES) -->
+    <section id="projects" class="py-16 sm:py-20 px-4 sm:px-6 bg-surface-card/30 border-t border-surface-border">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+          <div class="space-y-2">
+            <span class="text-xs font-mono font-semibold text-accent uppercase tracking-wider">
+              // Dự án thực tế &amp; Mã nguồn
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white">
+              Các Dự Án Trọng Tâm
+            </h2>
+            <p class="text-slate-400 text-xs sm:text-sm max-w-xl">
+              Mỗi dự án đều giải quyết một bài toán nghiệp vụ cụ thể, có mã nguồn rõ ràng trên GitHub để bạn có thể xem trực tiếp cách tổ chức code.
+            </p>
+          </div>
+
+          <a href="https://github.com/anhkhoadev9" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs text-accent hover:underline font-medium">
+            <span>Tất cả kho mã nguồn trên GitHub</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          <!-- PROJECT 1: Queue Management System -->
+          <article class="project-card rounded-xl p-5 flex flex-col justify-between">
+            <div class="space-y-4">
+              <!-- Header tag -->
+              <div class="flex items-center justify-between">
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono bg-accent-subtle text-accent border border-accent-border">
+                  <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                  Real-time System
+                </span>
+                <a href="https://github.com/anhkhoadev9" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition-colors" title="Xem GitHub">
+                  <i data-lucide="github" class="w-4 h-4"></i>
+                </a>
+              </div>
+
+              <!-- Title -->
+              <div>
+                <h3 class="text-lg font-bold text-white">
+                  Queue Management System
+                </h3>
+                <p class="text-[11px] text-slate-400 font-mono mt-0.5">
+                  Hệ thống bốc số &amp; điều phối quầy giao dịch
+                </p>
+              </div>
+
+              <!-- Problem & Solution -->
+              <div class="space-y-2 text-xs text-slate-300 leading-relaxed border-t border-surface-border pt-3">
+                <p>
+                  <strong class="text-white">Bài toán:</strong> Khách hàng tập trung đông tại các phòng giao dịch hoặc phòng khám gây lúng túng khi điều phối thủ công.
+                </p>
+                <p>
+                  <strong class="text-white">Giải pháp:</strong> Xây dựng hệ thống cho phép khách bốc số thứ tự. Khi nhân viên quầy ấn nút gọi số, màn hình chung ngoài sảnh sẽ tự động cập nhật số đang phục vụ thông qua <strong>SignalR WebSocket</strong> ngay lập tức mà không cần reload trang.
+                </p>
+              </div>
+
+              <!-- Technical highlights -->
+              <div class="space-y-1 text-xs text-slate-400">
+                <div class="flex items-center gap-2">
+                  <span class="w-1 h-1 rounded-full bg-accent"></span>
+                  <span>CQRS với MediatR tách bạch lệnh tạo số và đọc danh sách quầy.</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-1 h-1 rounded-full bg-accent"></span>
+                  <span>PostgreSQL lưu trạng thái vé: Chờ - Đang phục vụ - Hoàn tất.</span>
+                </div>
+              </div>
+
+              <!-- Tech tags -->
+              <div class="flex flex-wrap gap-1.5 pt-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">.NET 8</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">Clean Architecture</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">SignalR</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">PostgreSQL</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">Docker</span>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="pt-5 mt-4 border-t border-surface-border flex items-center gap-2">
+              <a href="https://github.com/anhkhoadev9" target="_blank" rel="noopener noreferrer" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-surface-elevated hover:bg-accent hover:text-black text-slate-200 text-xs font-medium border border-surface-border transition-colors">
+                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                <span>Xem Source Code</span>
+              </a>
+              <button onclick="showProjectDemoModal('Queue Management System', 'Hệ thống mô phỏng việc bốc số thứ tự tự động và đẩy sự kiện SignalR trực tiếp đến màn hình hiển thị quầy. Bạn có thể xem tài liệu phân tích nghiệp vụ và kiến trúc thư mục trong repo GitHub.')" class="px-3 py-2 rounded-lg bg-surface-elevated hover:bg-surface-hover text-slate-300 text-xs font-medium border border-surface-border transition-colors">
+                Demo
+              </button>
+            </div>
+          </article>
+
+          <!-- PROJECT 2: Project M - Memeries (Private Couple Vault) -->
+          <article class="project-card rounded-xl p-5 flex flex-col justify-between">
+            <div class="space-y-4">
+              <!-- Header tag -->
+              <div class="flex items-center justify-between">
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono bg-accent-subtle text-accent border border-accent-border">
+                  <i data-lucide="shield-check" class="w-3 h-3 text-accent"></i>
+                  Zero-Leak Privacy Vault
+                </span>
+                <span class="text-[10px] font-mono text-slate-400">PIN: DEMO2026</span>
+              </div>
+
+              <!-- Title -->
+              <div>
+                <h3 class="text-lg font-bold text-white">
+                  Project M: Memeries Vault
+                </h3>
+                <p class="text-[11px] text-slate-400 font-mono mt-0.5">
+                  Không gian lưu trữ kỷ niệm &amp; kết nối thời gian thực cho cặp đôi
+                </p>
+              </div>
+
+              <!-- Problem & Solution -->
+              <div class="space-y-2 text-xs text-slate-300 leading-relaxed border-t border-surface-border pt-3">
+                <p>
+                  <strong class="text-white">Bài toán:</strong> Ứng dụng mạng xã hội riêng tư cho 2 người đòi hỏi bảo mật tuyệt đối. Hình ảnh, video và tin nhắn nhạy cảm không được phép rò rỉ, chống tấn công IDOR và tránh bị tải lậu qua direct link.
+                </p>
+                <p>
+                  <strong class="text-white">Giải pháp:</strong> Xây dựng trên kiến trúc <strong>Feature-Driven</strong> kết hợp <strong>Supabase (PostgreSQL + RLS)</strong>. Dữ liệu hình ảnh được cô lập trong Private Bucket với <strong>Signed URL có thời hạn (TTL)</strong>, kiểm soát truy cập phân tầng (Row Level Security) theo cặp đôi và tích hợp cuộc gọi thoại/video P2P qua <strong>WebRTC</strong>.
+                </p>
+              </div>
+
+              <!-- Technical highlights -->
+              <div class="space-y-1 text-xs text-slate-400">
+                <div class="flex items-center gap-2">
+                  <span class="w-1 h-1 rounded-full bg-accent"></span>
+                  <span>PostgreSQL RLS: Chỉ 2 tài khoản ghép đôi mới có quyền đọc/ghi.</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-1 h-1 rounded-full bg-accent"></span>
+                  <span>Thuật toán Sliding Window Rate Limiter O(1) chống brute-force.</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-1 h-1 rounded-full bg-accent"></span>
+                  <span>Nén ảnh client-side (WebP) giảm 70% băng thông tải lên.</span>
+                </div>
+              </div>
+
+              <!-- Tech tags -->
+              <div class="flex flex-wrap gap-1.5 pt-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">React 19 / PWA</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">Supabase RLS</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">Signed URL (TTL)</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">WebRTC P2P</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">Vitest</span>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="pt-5 mt-4 border-t border-surface-border">
+              <button onclick="openPasscodeModal()" class="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-surface-elevated hover:bg-accent hover:text-black text-accent text-xs font-semibold border border-accent-border transition-colors">
+                <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                <span>Xem Kiến Trúc Bảo Mật (Nhập PIN Demo)</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- PROJECT 3: Blazor Enterprise Portal -->
+          <article class="project-card rounded-xl p-5 flex flex-col justify-between">
+            <div class="space-y-4">
+              <!-- Header tag -->
+              <div class="flex items-center justify-between">
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono bg-accent-subtle text-accent border border-accent-border">
+                  <i data-lucide="layout" class="w-3 h-3 text-accent"></i>
+                  Blazor Web App
+                </span>
+                <a href="https://github.com/anhkhoadev9" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition-colors" title="Xem GitHub">
+                  <i data-lucide="github" class="w-4 h-4"></i>
+                </a>
+              </div>
+
+              <!-- Title -->
+              <div>
+                <h3 class="text-lg font-bold text-white">
+                  Blazor Enterprise App
+                </h3>
+                <p class="text-[11px] text-slate-400 font-mono mt-0.5">
+                  Ứng dụng quản lý dữ liệu nội bộ
+                </p>
+              </div>
+
+              <!-- Problem & Solution -->
+              <div class="space-y-2 text-xs text-slate-300 leading-relaxed border-t border-surface-border pt-3">
+                <p>
+                  <strong class="text-white">Bài toán:</strong> Doanh nghiệp cần công cụ quản trị danh mục và dữ liệu nhân sự với giao diện đồng nhất, bảo mật và phản hồi nhanh.
+                </p>
+                <p>
+                  <strong class="text-white">Giải pháp:</strong> Xây dựng bằng <strong>Blazor Web App (.NET 8)</strong>, sử dụng C# cho cả giao diện tương tác lẫn xử lý dữ liệu. Tích hợp Entity Framework Core và kiểm tra dữ liệu bằng FluentValidation.
+                </p>
+              </div>
+
+              <!-- Technical highlights -->
+              <div class="space-y-1 text-xs text-slate-400">
+                <div class="flex items-center gap-2">
+                  <span class="w-1 h-1 rounded-full bg-accent"></span>
+                  <span>Không cần viết lại Model giữa Frontend và Backend.</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-1 h-1 rounded-full bg-accent"></span>
+                  <span>Phân trang, lọc dữ liệu động và tối ưu câu lệnh LINQ.</span>
+                </div>
+              </div>
+
+              <!-- Tech tags -->
+              <div class="flex flex-wrap gap-1.5 pt-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">.NET 8</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">Blazor Web App</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">EF Core</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">SQL Server</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-elevated text-slate-300">FluentValidation</span>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="pt-5 mt-4 border-t border-surface-border flex items-center gap-2">
+              <a href="https://github.com/anhkhoadev9" target="_blank" rel="noopener noreferrer" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-surface-elevated hover:bg-accent hover:text-black text-slate-200 text-xs font-medium border border-surface-border transition-colors">
+                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                <span>Xem Source Code</span>
+              </a>
+              <button onclick="showProjectDemoModal('Blazor Enterprise App', 'Dự án Blazor Web App với hệ thống quản trị danh mục, phân quyền theo vai trò và kiểm tra tính hợp lệ dữ liệu. Chi tiết mã nguồn được công khai tại GitHub cá nhân.')" class="px-3 py-2 rounded-lg bg-surface-elevated hover:bg-surface-hover text-slate-300 text-xs font-medium border border-surface-border transition-colors">
+                Demo
+              </button>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SKILLS MATRIX -->
+    <section id="skills" class="py-16 sm:py-20 px-4 sm:px-6 max-w-6xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-12 space-y-2">
+        <span class="text-xs font-mono font-semibold text-accent uppercase tracking-wider">
+          // Hộp công cụ thực tế
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white">
+          Kỹ Năng &amp; Công Nghệ Sử Dụng
+        </h2>
+        <p class="text-slate-400 text-xs sm:text-sm">
+          Phân loại theo mức độ sử dụng thường xuyên trong các dự án thực tế.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        
+        <!-- Group 1 -->
+        <div class="p-5 rounded-xl bg-surface-card border border-surface-border space-y-3.5">
+          <div class="flex items-center gap-2.5 text-accent">
+            <i data-lucide="code" class="w-5 h-5"></i>
+            <h3 class="text-sm font-bold text-white">Backend .NET</h3>
+          </div>
+          <div class="text-xs text-slate-400 font-mono">Công nghệ cốt lõi</div>
+
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>C# 12 / .NET 8 (LTS)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>ASP.NET Core Web API</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Entity Framework Core</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>SignalR (WebSockets)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Blazor (Server &amp; WASM)</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Group 2 -->
+        <div class="p-5 rounded-xl bg-surface-card border border-surface-border space-y-3.5">
+          <div class="flex items-center gap-2.5 text-accent">
+            <i data-lucide="layers" class="w-5 h-5"></i>
+            <h3 class="text-sm font-bold text-white">Kiến Trúc &amp; Design</h3>
+          </div>
+          <div class="text-xs text-slate-400 font-mono">Nguyên lý tổ chức code</div>
+
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Clean Architecture</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>CQRS Pattern (MediatR)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Nguyên lý SOLID &amp; DRY</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Repository &amp; Unit of Work</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Pipeline Behaviors (Validation)</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Group 3 -->
+        <div class="p-5 rounded-xl bg-surface-card border border-surface-border space-y-3.5">
+          <div class="flex items-center gap-2.5 text-accent">
+            <i data-lucide="database" class="w-5 h-5"></i>
+            <h3 class="text-sm font-bold text-white">Database &amp; DevOps</h3>
+          </div>
+          <div class="text-xs text-slate-400 font-mono">Lưu trữ &amp; Triển khai</div>
+
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>PostgreSQL</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Microsoft SQL Server</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Docker &amp; Docker Compose</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Git &amp; GitHub Actions (CI)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Redis (In-Memory Cache)</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Group 4 -->
+        <div class="p-5 rounded-xl bg-surface-card border border-surface-border space-y-3.5">
+          <div class="flex items-center gap-2.5 text-accent">
+            <i data-lucide="file-check-2" class="w-5 h-5"></i>
+            <h3 class="text-sm font-bold text-white">Technical BA</h3>
+          </div>
+          <div class="text-xs text-slate-400 font-mono">Đặc tả &amp; Giao tiếp</div>
+
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>BPMN 2.0 Process Flow</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>UML Sequence &amp; Use Case</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>SRS / User Stories &amp; AC</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Swagger / OpenAPI Spec</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>Postman Mocking &amp; Testing</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WORKING PRINCIPLES -->
+    <section id="principles" class="py-16 sm:py-20 px-4 sm:px-6 bg-surface-card/30 border-t border-surface-border">
+      <div class="max-w-6xl mx-auto">
+        <div class="max-w-2xl mx-auto text-center space-y-2 mb-12">
+          <span class="text-xs font-mono font-semibold text-accent uppercase tracking-wider">
+            // Phương châm làm việc
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white">
+            Nguyên Tắc Kỹ Thuật Của Mình
+          </h2>
+          <p class="text-slate-400 text-xs sm:text-sm">
+            Những điều mình luôn tự nhắc nhở khi tham gia vào bất kỳ dự án phần mềm nào.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <div class="p-6 rounded-xl bg-surface-card border border-surface-border space-y-3">
+            <div class="w-8 h-8 rounded-lg bg-accent-subtle text-accent flex items-center justify-center font-mono font-bold text-sm">
+              01
+            </div>
+            <h3 class="text-base font-bold text-white">Hiểu đúng trước khi gõ code</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Mất 1 giờ làm rõ User Story và Acceptance Criteria sẽ tiết kiệm 1 tuần đập đi sửa lại cấu trúc Database. Mình luôn chủ động đặt câu hỏi khi yêu cầu chưa rõ ràng.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-xl bg-surface-card border border-surface-border space-y-3">
+            <div class="w-8 h-8 rounded-lg bg-surface-elevated text-white flex items-center justify-center font-mono font-bold text-sm">
+              02
+            </div>
+            <h3 class="text-base font-bold text-white">Code dễ đọc hơn code "thông minh"</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Code viết ra là để đồng đội đọc và bảo trì. Mình ưu tiên đặt tên biến, hàm tường minh, tuân thủ Clean Architecture thay vì viết các đoạn code tắt khó hiểu.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-xl bg-surface-card border border-surface-border space-y-3">
+            <div class="w-8 h-8 rounded-lg bg-accent-subtle text-accent flex items-center justify-center font-mono font-bold text-sm">
+              03
+            </div>
+            <h3 class="text-base font-bold text-white">Cầu tiến và đón nhận phản hồi</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Công nghệ luôn thay đổi. Khi gặp lỗi hoặc nhận review từ các anh/chị đi trước, mình luôn nghiêm túc tìm hiểu nguyên nhân gốc rễ (Root Cause) để không lặp lại.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION & BACKGROUND -->
+    <section id="education" class="py-16 sm:py-20 px-4 sm:px-6 max-w-6xl mx-auto">
+      <div class="max-w-3xl mx-auto space-y-8">
+        
+        <div class="text-center space-y-2">
+          <span class="text-xs font-mono font-semibold text-accent uppercase tracking-wider">
+            // Nền tảng học vấn
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white">
+            Học Vấn &amp; Quá Trình Rèn Luyện
+          </h2>
+        </div>
+
+        <div class="p-6 rounded-xl bg-surface-card border border-surface-border space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-lg font-bold text-white">Đại học Đồng Tháp</h3>
+              <p class="text-xs text-accent font-medium">Chuyên ngành: Kỹ thuật Phần mềm (Software Engineering)</p>
+            </div>
+            <span class="px-2.5 py-1 rounded bg-surface-elevated text-[11px] font-mono text-slate-300 border border-surface-border">
+              Cử nhân Đại học
+            </span>
+          </div>
+
+          <p class="text-xs text-slate-300 leading-relaxed pt-2">
+            Được đào tạo bài bản về cấu trúc dữ liệu và giải thuật, cơ sở dữ liệu quan hệ, lập trình hướng đối tượng (OOP), các quy trình phát triển phần mềm (Agile Scrum) và đồ án ứng dụng thực tế.
+          </p>
+
+          <div class="pt-2 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+            <span class="px-2 py-0.5 rounded bg-surface-elevated">Cấu trúc dữ liệu &amp; Giải thuật</span>
+            <span class="px-2 py-0.5 rounded bg-surface-elevated">Cơ sở dữ liệu nâng cao</span>
+            <span class="px-2 py-0.5 rounded bg-surface-elevated">Phân tích thiết kế hệ thống</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-16 sm:py-20 px-4 sm:px-6 max-w-6xl mx-auto border-t border-surface-border">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        <!-- Left: Direct Info -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="space-y-2">
+            <span class="text-xs font-mono font-semibold text-accent uppercase tracking-wider">
+              // Kết nối trực tiếp
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white">
+              Cùng Trao Đổi Cơ Hội Việc Làm
+            </h2>
+            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+              Mình đang tìm kiếm cơ hội việc làm <strong>Backend .NET Developer</strong> hoặc <strong>Technical BA</strong> tại TP. Hồ Chí Minh. Rất mong có cơ hội được trao đổi cùng Quý công ty.
+            </p>
+          </div>
+
+          <!-- Contact items -->
+          <div class="space-y-3 pt-2">
+            
+            <!-- Email -->
+            <div class="p-3.5 rounded-xl bg-surface-card border border-surface-border flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-accent-subtle text-accent flex items-center justify-center">
+                  <i data-lucide="mail" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="text-[10px] font-mono text-slate-400 uppercase">Email</div>
+                  <div class="text-xs sm:text-sm font-semibold text-white select-all">huynhankhoa30042019@gmail.com</div>
+                </div>
+              </div>
+              <button onclick="copyToClipboard('huynhankhoa30042019@gmail.com', 'Đã copy địa chỉ Email!')" class="p-2 rounded-lg bg-surface-elevated hover:bg-accent hover:text-black text-slate-300 transition-colors" title="Sao chép">
+                <i data-lucide="copy" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <!-- GitHub -->
+            <a href="https://github.com/anhkhoadev9" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-surface-card border border-surface-border flex items-center justify-between hover:border-accent-border transition-colors">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-surface-elevated text-slate-300 flex items-center justify-center">
+                  <i data-lucide="github" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="text-[10px] font-mono text-slate-400 uppercase">GitHub Profile</div>
+                  <div class="text-xs sm:text-sm font-semibold text-white">github.com/anhkhoadev9</div>
+                </div>
+              </div>
+              <i data-lucide="external-link" class="w-4 h-4 text-slate-400"></i>
+            </a>
+
+            <!-- Location -->
+            <div class="p-3.5 rounded-xl bg-surface-card border border-surface-border flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-surface-elevated text-accent flex items-center justify-center">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <div class="text-[10px] font-mono text-slate-400 uppercase">Địa Điểm</div>
+                <div class="text-xs sm:text-sm font-semibold text-white">TP. Hồ Chí Minh, Việt Nam</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: Simple Message Form -->
+        <div class="lg:col-span-7">
+          <div class="p-6 sm:p-8 rounded-xl bg-surface-card border border-surface-border">
+            <h3 class="text-lg font-bold text-white mb-1">Gửi Tin Nhắn Nhanh</h3>
+            <p class="text-xs text-slate-400 mb-5">
+              Bạn có thể để lại lời nhắn hoặc gửi email trực tiếp cho mình.
+            </p>
+
+            <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="name" class="block text-xs font-mono text-slate-300 mb-1.5">Họ &amp; Tên *</label>
+                  <input type="text" id="name" required placeholder="Tên của bạn" class="w-full px-3.5 py-2.5 rounded-lg bg-surface-base border border-surface-border text-white placeholder-slate-500 text-xs focus:outline-none focus:border-accent" />
+                </div>
+                
+                <div>
+                  <label for="email" class="block text-xs font-mono text-slate-300 mb-1.5">Email *</label>
+                  <input type="email" id="email" required placeholder="email@congty.com" class="w-full px-3.5 py-2.5 rounded-lg bg-surface-base border border-surface-border text-white placeholder-slate-500 text-xs focus:outline-none focus:border-accent" />
+                </div>
+              </div>
+
+              <div>
+                <label for="subject" class="block text-xs font-mono text-slate-300 mb-1.5">Tiêu đề *</label>
+                <input type="text" id="subject" required placeholder="Vị trí .NET Backend / Trao đổi công việc" class="w-full px-3.5 py-2.5 rounded-lg bg-surface-base border border-surface-border text-white placeholder-slate-500 text-xs focus:outline-none focus:border-accent" />
+              </div>
+
+              <div>
+                <label for="message" class="block text-xs font-mono text-slate-300 mb-1.5">Nội dung *</label>
+                <textarea id="message" rows="3" required placeholder="Nội dung cần trao đổi..." class="w-full px-3.5 py-2.5 rounded-lg bg-surface-base border border-surface-border text-white placeholder-slate-500 text-xs focus:outline-none focus:border-accent resize-none"></textarea>
+              </div>
+
+              <button type="submit" id="submit-btn" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-black font-semibold text-xs hover:opacity-90 transition-opacity">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                <span>Gửi Đi</span>
+              </button>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-surface-border bg-surface-base py-8 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      <div>
+        &copy; 2026 <strong class="text-white">Huỳnh Anh Khoa</strong> &bull; Backend .NET Developer &amp; Technical BA
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#hero" class="hover:text-white transition-colors">Lên đầu trang &#8593;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- MODAL: PIN VERIFICATION (PROJECT M ACCESS DEMO) -->
+  <div id="passcode-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="relative w-full max-w-sm rounded-xl bg-surface-card border border-surface-border p-6 space-y-5">
+      
+      <button onclick="closePasscodeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="text-center space-y-1.5">
+        <div class="w-10 h-10 rounded-xl bg-accent-subtle text-accent mx-auto flex items-center justify-center">
+          <i data-lucide="key" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Xác Thực Quyền Truy Cập</h3>
+        <p class="text-xs text-slate-400 leading-normal">
+          Dự án <strong>Project M (Memeries Vault)</strong> áp dụng các tiêu chuẩn an ninh nghiêm ngặt. Vui lòng nhập mã PIN demo để mở khóa sơ đồ kiến trúc bảo mật.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <input type="password" id="passcode-input" maxlength="10" placeholder="Nhập PIN demo..." class="w-full text-center font-mono font-bold text-base px-3 py-2 rounded-lg bg-surface-base border border-surface-border text-white focus:outline-none focus:border-accent" />
+        </div>
+
+        <div id="passcode-error" class="hidden text-xs text-rose-400 text-center font-mono">
+          Mã chưa đúng. Bạn có thể bấm "Điền tự động" bên dưới!
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-accent-subtle border border-accent-border flex items-center justify-between text-xs">
+          <span class="text-accent font-mono">Mã PIN: <strong>DEMO2026</strong></span>
+          <button onclick="fillDemoPasscode()" class="text-accent hover:underline font-semibold">
+            Điền tự động
+          </button>
+        </div>
+
+        <button onclick="verifyPasscode()" class="w-full px-4 py-2 rounded-lg bg-accent text-black text-xs font-semibold hover:opacity-90 transition-opacity">
+          Mở khóa xem tài liệu
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: PROJECT M UNLOCKED CONTENT (REAL ARCHITECTURE FROM LOVEAPP / MEMERIES) -->
+  <div id="project-m-unlocked-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-xl bg-surface-card border border-surface-border p-6 space-y-4">
+      
+      <button onclick="closeProjectMModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-accent-subtle text-accent flex items-center justify-center">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-mono text-accent uppercase font-semibold">Xác thực thành công (Passcode Verified)</span>
+          <h3 class="text-base font-bold text-white">Project M: Kiến Trúc Bảo Mật &amp; Kỹ Thuật Memeries</h3>
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-300 leading-relaxed border-t border-surface-border pt-3">
+        Dưới đây là các giải pháp kỹ thuật thực tế được thiết kế và triển khai trực tiếp trong mã nguồn dự án <strong>Memeries (LoveApp)</strong>:
+      </p>
+
+      <div class="space-y-2.5 text-xs text-slate-300 leading-relaxed">
+        
+        <!-- Tech 1: Postgres RLS -->
+        <div class="p-3.5 rounded-lg bg-surface-base border border-surface-border space-y-1">
+          <div class="flex items-center gap-2 text-accent font-mono font-semibold">
+            <i data-lucide="database" class="w-3.5 h-3.5"></i>
+            <span>1. PostgreSQL Row Level Security (RLS)</span>
+          </div>
+          <p class="text-slate-400">
+            Thay vì chỉ dựa vào tầng code ứng dụng, chính sách an ninh được thực thi trực tiếp tại tầng cơ sở dữ liệu: mỗi row tin nhắn hay ảnh album đều kiểm tra ràng buộc <code class="text-accent font-mono">auth.uid() = partner_id</code>. Người dùng tuyệt đối không thể đọc hay can thiệp dữ liệu của cặp đôi khác (triệt tiêu 100% lỗ hổng IDOR).
+          </p>
+        </div>
+
+        <!-- Tech 2: Signed URL TTL -->
+        <div class="p-3.5 rounded-lg bg-surface-base border border-surface-border space-y-1">
+          <div class="flex items-center gap-2 text-accent font-mono font-semibold">
+            <i data-lucide="link-2" class="w-3.5 h-3.5"></i>
+            <span>2. Private Media Storage &amp; Signed URLs (TTL)</span>
+          </div>
+          <p class="text-slate-400">
+            Hình ảnh và video trong kho kỷ niệm (Album) được lưu trong Private Storage Bucket. Client chỉ nhận được Signed URL có chữ ký điện tử với thời gian sống ngắn (60 - 300 giây). Dù có sao chép liên kết ra ngoài thì link cũng sẽ tự động vô hiệu hóa ngay sau đó.
+          </p>
+        </div>
+
+        <!-- Tech 3: In-Memory Sliding Window Rate Limiter -->
+        <div class="p-3.5 rounded-lg bg-surface-base border border-surface-border space-y-1">
+          <div class="flex items-center gap-2 text-accent font-mono font-semibold">
+            <i data-lucide="gauge" class="w-3.5 h-3.5"></i>
+            <span>3. In-Memory Sliding Window Rate Limiter (O(1))</span>
+          </div>
+          <p class="text-slate-400">
+            Tự xây dựng thuật toán Rate Limiter cửa sổ trượt (Sliding Window) với cấu trúc Map tra cứu O(1), tự động prune các entry hết hạn. Giúp bảo vệ các API nhạy cảm (gửi thông báo, tải ảnh, signaling cuộc gọi) khỏi nguy cơ spam và tấn công brute-force.
+          </p>
+        </div>
+
+        <!-- Tech 4: WebRTC P2P Call -->
+        <div class="p-3.5 rounded-lg bg-surface-base border border-surface-border space-y-1">
+          <div class="flex items-center gap-2 text-accent font-mono font-semibold">
+            <i data-lucide="video" class="w-3.5 h-3.5"></i>
+            <span>4. WebRTC Peer-to-Peer Encrypted Calling</span>
+          </div>
+          <p class="text-slate-400">
+            Triển khai cuộc gọi video và thoại P2P trực tiếp giữa hai thiết bị. Luồng Media Stream được mã hóa đầu cuối (E2EE) không thông qua máy chủ trung gian, giúp giảm tối đa độ trễ và bảo vệ sự riêng tư trọn vẹn.
+          </p>
+        </div>
+
+        <!-- Tech 5: Audit Security Logs -->
+        <div class="p-3.5 rounded-lg bg-surface-base border border-surface-border space-y-1">
+          <div class="flex items-center gap-2 text-accent font-mono font-semibold">
+            <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+            <span>5. Security Audit Logging (`security_logs`)</span>
+          </div>
+          <p class="text-slate-400">
+            Bảng nhật ký an ninh lưu vết IP, Actor, Endpoint, Event Type và Severity. Chỉ tài khoản quản trị hệ thống được chỉ định trong Policy RLS mới có quyền truy vấn, phục vụ việc giám sát và phát hiện xâm nhập.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeProjectMModal()" class="px-4 py-1.5 rounded-lg bg-surface-elevated hover:bg-surface-hover text-slate-300 text-xs">
+          Đóng
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: CV RESUME SUMMARY -->
+  <div id="cv-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="relative w-full max-w-md rounded-xl bg-surface-card border border-surface-border p-6 space-y-5">
+      
+      <button onclick="closeCvModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="text-center space-y-1">
+        <div class="w-10 h-10 rounded-xl bg-accent-subtle text-accent mx-auto flex items-center justify-center">
+          <i data-lucide="file-text" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Tóm Tắt Hồ Sơ Năng Lực</h3>
+        <p class="text-xs text-slate-400">
+          Huỳnh Anh Khoa &bull; Backend .NET Developer &amp; Tech BA
+        </p>
+      </div>
+
+      <div class="p-3.5 rounded-lg bg-surface-base border border-surface-border space-y-2 text-xs">
+        <div class="flex justify-between border-b border-surface-border pb-1.5">
+          <span class="text-slate-400">Vị trí hướng tới:</span>
+          <span class="text-white font-medium">Backend .NET / Tech BA</span>
+        </div>
+        <div class="flex justify-between border-b border-surface-border py-1.5">
+          <span class="text-slate-400">Trọng tâm kỹ thuật:</span>
+          <span class="text-accent font-medium">.NET 8, Clean Architecture, CQRS, SignalR</span>
+        </div>
+        <div class="flex justify-between border-b border-surface-border py-1.5">
+          <span class="text-slate-400">Học vấn:</span>
+          <span class="text-white">Kỹ thuật Phần mềm - ĐH Đồng Tháp</span>
+        </div>
+        <div class="flex justify-between pt-1.5">
+          <span class="text-slate-400">Trạng thái:</span>
+          <span class="text-accent font-medium">Sẵn sàng nhận việc tại TP.HCM</span>
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <button onclick="downloadCvSimulated()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-accent text-black text-xs font-semibold hover:opacity-90 transition-opacity">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i>
+          <span>Tải tóm tắt CV</span>
+        </button>
+        <button onclick="closeCvModal()" class="px-4 py-2 rounded-lg bg-surface-elevated hover:bg-surface-hover text-slate-300 text-xs">
+          Đóng
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GENERIC DEMO MODAL -->
+  <div id="demo-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="relative w-full max-w-sm rounded-xl bg-surface-card border border-surface-border p-5 space-y-3">
+      <button onclick="closeDemoModal()" class="absolute top-3.5 right-3.5 text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+      <h3 id="demo-title" class="text-sm font-bold text-white">Mô tả Demo</h3>
+      <p id="demo-description" class="text-xs text-slate-300 leading-relaxed"></p>
+      <div class="pt-2 flex justify-end gap-2">
+        <a href="https://github.com/anhkhoadev9" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-accent text-black text-xs font-semibold">Xem GitHub</a>
+        <button onclick="closeDemoModal()" class="px-3 py-1.5 rounded-lg bg-surface-elevated text-slate-300 text-xs">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-surface-card border border-accent-border shadow-xl text-xs text-white">
+    <div id="toast-icon" class="text-accent">
+      <i data-lucide="check-circle" class="w-4 h-4"></i>
+    </div>
+    <span id="toast-message">Thành công!</span>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Initialize Lucide Icons
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    mobileMenuBtn?.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // Toast Notification
+    let toastTimeout;
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      const toastIcon = document.getElementById('toast-icon');
+
+      toastMessage.textContent = message;
+      if (isSuccess) {
+        toastIcon.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 text-accent"></i>';
+        toast.className = "fixed bottom-6 right-6 z-50 transform translate-y-0 opacity-100 transition-all duration-300 pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-surface-card border border-accent-border shadow-xl text-xs text-white";
+      } else {
+        toastIcon.innerHTML = '<i data-lucide="alert-circle" class="w-4 h-4 text-rose-400"></i>';
+        toast.className = "fixed bottom-6 right-6 z-50 transform translate-y-0 opacity-100 transition-all duration-300 pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-surface-card border border-rose-500/40 shadow-xl text-xs text-white";
+      }
+      lucide.createIcons();
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
+    // Copy to Clipboard
+    function copyToClipboard(text, successMsg) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(successMsg || 'Đã sao chép!');
+        }).catch(() => {
+          fallbackCopy(text, successMsg);
+        });
+      } else {
+        fallbackCopy(text, successMsg);
+      }
+    }
+
+    function fallbackCopy(text, successMsg) {
+      const tempInput = document.createElement('input');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      showToast(successMsg || 'Đã sao chép!');
+    }
+
+    // Passcode Logic
+    const VALID_PASSCODES = ['DEMO2026', '123456', 'ANHKHOA'];
+
+    function openPasscodeModal() {
+      const modal = document.getElementById('passcode-modal');
+      const input = document.getElementById('passcode-input');
+      const error = document.getElementById('passcode-error');
+      
+      input.value = '';
+      error.classList.add('hidden');
+      modal.classList.remove('hidden');
+      setTimeout(() => input.focus(), 100);
+    }
+
+    function closePasscodeModal() {
+      document.getElementById('passcode-modal').classList.add('hidden');
+    }
+
+    function fillDemoPasscode() {
+      const input = document.getElementById('passcode-input');
+      input.value = 'DEMO2026';
+      verifyPasscode();
+    }
+
+    function verifyPasscode() {
+      const input = document.getElementById('passcode-input');
+      const error = document.getElementById('passcode-error');
+      const userCode = input.value.trim().toUpperCase();
+
+      if (VALID_PASSCODES.includes(userCode)) {
+        closePasscodeModal();
+        openProjectMModal();
+        showToast('Xác thực PIN demo thành công!');
+      } else {
+        error.classList.remove('hidden');
+        input.classList.add('border-rose-500');
+        setTimeout(() => {
+          input.classList.remove('border-rose-500');
+        }, 1500);
+      }
+    }
+
+    document.getElementById('passcode-input')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') verifyPasscode();
+    });
+
+    function openProjectMModal() {
+      document.getElementById('project-m-unlocked-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeProjectMModal() {
+      document.getElementById('project-m-unlocked-modal').classList.add('hidden');
+    }
+
+    // CV Modal
+    function openCvModal() {
+      document.getElementById('cv-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeCvModal() {
+      document.getElementById('cv-modal').classList.add('hidden');
+    }
+
+    function downloadCvSimulated() {
+      showToast('Đang tải tóm tắt CV...');
+      setTimeout(() => {
+        const content = `HUỲNH ANH KHOA - BACKEND .NET DEVELOPER & TECHNICAL BA
+Email: huynhankhoa30042019@gmail.com | GitHub: https://github.com/anhkhoadev9
+Địa điểm: TP. Hồ Chí Minh
+Học vấn: Cử nhân Kỹ thuật Phần mềm - Đại học Đồng Tháp
+Kỹ năng chính: C# 12, .NET 8, ASP.NET Core, Clean Architecture, CQRS MediatR, SignalR, PostgreSQL, SQL Server, Docker, BPMN 2.0, User Stories.`;
+        
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Huynh_Anh_Khoa_CV_Backend_TechBA.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        closeCvModal();
+      }, 500);
+    }
+
+    // Demo Modal
+    function showProjectDemoModal(title, description) {
+      document.getElementById('demo-title').textContent = title;
+      document.getElementById('demo-description').textContent = description;
+      document.getElementById('demo-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeDemoModal() {
+      document.getElementById('demo-modal').classList.add('hidden');
+    }
+
+    // Contact Form
+    function handleContactSubmit(event) {
+      event.preventDefault();
+      const submitBtn = document.getElementById('submit-btn');
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Đang gửi...</span>`;
+
+      setTimeout(() => {
+        showToast(`Cảm ơn bạn! Đang mở ứng dụng email...`);
+        const mailtoUri = `mailto:huynhankhoa30042019@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Xin chào Huỳnh Anh Khoa,\n\nTôi là: ${name} (${email})\n\nNội dung: ${message}`)}`;
+        
+        setTimeout(() => {
+          window.location.href = mailtoUri;
+          document.getElementById('contact-form').reset();
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i data-lucide="send" class="w-3.5 h-3.5"></i><span>Gửi Đi</span>`;
+          lucide.createIcons();
+        }, 1000);
+      }, 600);
+    }
+  </script>
+</body>
+</html>
